@@ -5,7 +5,7 @@ var tableData = data;
 // YOUR CODE HERE!
 
 renderTable(tableData);
- // Select the button
+// Select the button
 var button = d3.select("#filter-btn");
 
 // Select the form
@@ -13,27 +13,55 @@ var form = d3.select("#form");
 
 // Create event handlers 
 button.on("click", runEnter);
-form.on("submit",runEnter);
+form.on("submit", runEnter);
 
 // Complete the event handler function for the form
 function runEnter() {
 
-  // Prevent the page from refreshing
-  d3.event.preventDefault();
-  
-  // Select the input element and get the raw HTML node
-  var inputElement = d3.select("#datetime");
+    // Prevent the page from refreshing
+    d3.event.preventDefault();
 
-  // Get the value property of the input element
-  var inputValue = inputElement.property("value");
+    // Select the input element and get the raw HTML node
+    var inputDate = d3.select("#datetime");
+    // Get the value property of the input element
+    var dateValue = inputDate.property("value");
 
-  console.log(inputValue);
+    var inputCity = d3.select("#city");
+    // Get the value property of the input element
+    var cityValue = inputCity.property("value");
 
-  var filteredData = tableData.filter(sighting => sighting.datetime === inputValue);
-  renderTable(filteredData);
+    /*   var inputState = d3.select("#state");
+    
+        // Get the value property of the input element
+        var inputValue = inputElement.property("value");
+    
+      var inputCountry = d3.select("#country");
+    
+        // Get the value property of the input element
+        var inputValue = inputElement.property("value");
+    
+      var inputShape = d3.select("#shape");
+    
+      // Get the value property of the input element
+      var inputValue = inputElement.property("value"); */
 
-  console.log(filteredData);
-};  
+    console.log(dateValue);
+    console.log('tableData' + tableData);
+
+    var filteredData = tableData;
+
+    if (dateValue && dateValue.trim().length > 0)
+        var filteredData = tableData.filter(sighting => sighting.datetime === dateValue);
+
+    console.log(cityValue);
+
+    if (cityValue && cityValue.trim().length > 0)
+        var filteredData = filteredData.filter(sighting => sighting.city === cityValue);
+
+    renderTable(filteredData);
+
+    console.log(filteredData);
+};
 
 function renderTable(tableData) {
     // Get a reference to the table body
@@ -42,11 +70,11 @@ function renderTable(tableData) {
     tbody.html("");
 
     // Use d3 to append one table row `tr` for each sighting object
-    tableData.forEach(function(sighting) {
+    tableData.forEach(function (sighting) {
         //   console.log(sighting);
         var row = tbody.append("tr");
-        Object.entries(sighting).forEach(function([key, value]) {
-        //    console.log(key, value);
+        Object.entries(sighting).forEach(function ([key, value]) {
+            //    console.log(key, value);
             var cell = row.append("td");
             cell.text(value);
         });
